@@ -1,0 +1,16 @@
+<% @travels.each do |travel| %>
+  <div class="card" style="width: 18rem;">
+    <div class="card-header">
+    <h1><%= travel['destination'] %></h1>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><%= travel['id'] %></li>
+      <li class="list-group-item"><%= travel['origin'] %></li>
+      <li class="list-group-item"><%= travel['destination'] %></li>
+      <li class="list-group-item"><%= travel['departure_date'] %></li>
+      <li class="list-group-item"><%= travel['return_date'] %></li>
+    </ul>
+  </div>
+<% end %>
+
+
