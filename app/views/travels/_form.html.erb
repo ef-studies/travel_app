@@ -1,0 +1,17 @@
+<%= form_for travel, url: "/travels", method: method do |form| %>
+  <div class="container">
+    <div class="col-sm-6">
+      <div class="row mb-3">
+        <%= form.label :origin, 'Origem: ', class: "col-sm-2 col-form-label" %>
+        <%= form.text_field :origin, class: "form-control" %>
+        <%= form.label :destination, 'Destino: ', class: "col-sm-2 col-form-label" %>
+        <%= form.text_field :destination, class: "form-control" %>
+        <%= form.label :departure_date, 'Data de partida: ', class: "col-sm-3 col-form-label" %>
+        <%= form.date_field :departure_date, class: "form-control" %>
+        <%= form.label :return_date, 'Data de retorno: ', class: "col-sm-3 col-form-label" %>
+        <%= form.date_field :return_date, class: "form-control" %>
+      </div>
+      <%= form.submit btn_label, class: "btn btn-info" %>
+    </div>
+  </div>
+<% end %>
