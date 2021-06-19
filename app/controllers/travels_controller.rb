@@ -7,11 +7,11 @@ class TravelsController < ApplicationController
   end
 
   def new
-    @travel 
+    @travel = new_travel
   end
 
   def create
-    response = HTTParty.post('http://localhost:3000/api/v0/travels', body: new_travel)
+    response = HTTParty.post('http://localhost:3000/api/v0/travels', body: { travel: travel_params })
     if response.code == "200" || "302"
       redirect_to travels_path
     else
@@ -34,7 +34,16 @@ class TravelsController < ApplicationController
 
   private
 
+  def travel_params
+    params.require(:travel).permit(:destination, :origin, :departure_date, :return_date)
+  end
+
   def new_travel
-    params.permit(:destination, :origin, :departure_date, :return_date)
+    {
+      destination: '',
+      origin: '',
+      departure_date: Time.now.strftime("%Y-%m-%dT%H:%M"),
+      return_date: Time.now.strftime("%Y-%m-%dT%H:%M")
+    }
   end
 end
