@@ -1,8 +1,9 @@
 #TODO Api aeroportos
 class TravelsController < ApplicationController
+API_BASE = "http://localhost/api/v0/travels/"
 
   def index
-    response = HTTParty.get('http://localhost:3000/api/v0/travels')
+    response = HTTParty.get(API_BASE)
     @travels = JSON.parse(response.body)
   end
 
@@ -11,31 +12,43 @@ class TravelsController < ApplicationController
   end
 
   def create
-    response = HTTParty.post('http://localhost:3000/api/v0/travels', body: { travel: travel_params })
-    if response.code == "200" || "302"
+    response = HTTParty.post(API_BASE, body: { travel: travel_params })
+
+    if response.code == 200
       redirect_to travels_path
     else
-      redirect_to new_travel_path
+      render :new
     end
   end
 
   def edit
-    response = HTTParty.get("http://localhost:3000/api/v0/travels/#{params['id']}")
+    response = HTTParty.get("#{API_BASE}#{params['id']}")
     @travel = JSON.parse(response.body).symbolize_keys!
   end
 
   def update
+    @travel = travel_params
+    @travel[:id] = params['id']
+
+    response = HTTParty.patch("#{API_BASE}#{params['id']}", body: { travel: @travel })
+
+    if response.code == 200
+      redirect_to travels_path
+    else
+      render :edit
+    end
   end
 
   def destroy
-    HTTParty.delete("http://localhost:3000/api/v0/travels/#{params['id']}")
+    HTTParty.delete("#{API_BASE}#{params['id']}")
     redirect_to travels_path
   end
 
   private
 
   def travel_params
-    params.require(:travel).permit(:destination, :origin, :departure_date, :return_date)
+    params.require(:travel).permit(:id, :destination, :origin, :departure_date,
+      :return_date)
   end
 
   def new_travel
